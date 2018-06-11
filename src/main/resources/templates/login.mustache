@@ -39,18 +39,11 @@
 </section>
 <section class="section">
   <div class="container">
-    <a class="btn btn-block btn-social btn-github" href="/oauth2/authorization/github">
-      <span class="fa fa-github"></span> Sign in with Github
+    {{#registrations}}
+    <a class="btn btn-block btn-social btn-{{registrationId}}" href="{{uri}}">
+      <span class="fa fa-{{registrationId}}"></span> Sign in with {{clientName}}
     </a>
-    <a class="btn btn-block btn-social btn-google" href="/oauth2/authorization/google">
-      <span class="fa fa-google"></span> Sign in with Google
-    </a>
-    <a class="btn btn-block btn-social btn-facebook" href="/oauth2/authorization/facebook">
-      <span class="fa fa-facebook"></span> Sign in with Facebook
-    </a>
-    <a class="btn btn-block btn-social btn-kakao" href="/oauth2/authorization/kakao">
-      <span class="fa fa-kakao"></span> Sign in with Kakao
-    </a>
+    {{/registrations}}
   </div>
 </section>
 </body>
