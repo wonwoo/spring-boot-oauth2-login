@@ -1,14 +1,14 @@
 package ml.wonwoo.springbootoauth2login;
 
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller
 public class LoginController {
@@ -20,13 +20,11 @@ public class LoginController {
 
   @GetMapping("/login")
   public String login(Model model) {
-    List<Registration> registrations = new ArrayList<>();
-    for (ClientRegistration clientRegistration : clientRegistrationRepository) {
-      registrations.add(new Registration(clientRegistration.getRegistrationId(),
-          OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI
-              + "/" + clientRegistration.getRegistrationId(),
-          clientRegistration.getClientName()));
-    }
+    List<Registration> registrations = StreamSupport.stream(clientRegistrationRepository.spliterator(), true)
+        .map(clientRegistration -> new Registration(clientRegistration.getRegistrationId(),
+            OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI
+                + "/" + clientRegistration.getRegistrationId(),
+            clientRegistration.getClientName())).collect(Collectors.toList());
     model.addAttribute("registrations", registrations);
     return "login";
   }
